@@ -22,3 +22,28 @@ Open Browser To LOgin Page
     Maximize Browser Window
     Set Selenium Speed    ${DELAY}
     Login Page Should Be Open
+
+Go TO Login Page
+    Location Should Be    ${WELCOME_URL}
+    Title Should Be    Swag Labs
+
+Welcome Page Should Be Open
+    Location Should Be    ${WELCOME_URL}
+    Title Should Be    Swag Labs
+
+Verify Login
+    [Arguments]     ${username}    ${password}    ${expected}    ${expected_error}=None    ${round}=1    
+    FOR    ${i}    IN RANGE    ${round}
+        Input Text    id=user-name    ${username}
+        Input Text    id=password     ${password}
+        Click Button  id=login-button
+        IF    '${expected}' == 'success'
+            Welcome Page Should Be Open
+        ELSE
+            Element Should Contain    
+            ...    css:[data-test="error"]    
+            ...    ${expected_error}            
+        END
+         
+    END
+    
